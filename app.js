@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = process.env.port || 4000;
 const exphbs = require('express-handlebars');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const hbs = exphbs.create({
     defaultLayout: 'main',
@@ -11,12 +12,14 @@ const hbs = exphbs.create({
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', 'views');
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser({extended: true}));
 
-
+const arr = ['hi', 'world'];
 
 app.get('/', (req, res) => {
-    res.render('index');
+    res.render('index', {
+			arr: arr
+		});
 });
 
 app.get('/contacts', (req, res) => {
@@ -24,8 +27,11 @@ app.get('/contacts', (req, res) => {
 });
 
 app.post('/', (req, res) => {
-  console.log(req.body);
+		console.log(req.body);
+		res.redirect('/');
 });
+
+
 
 
 
