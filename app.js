@@ -14,21 +14,30 @@ app.set('view engine', 'hbs');
 app.set('views', 'views');
 app.use(bodyParser({extended: true}));
 
-const arr = ['hi', 'world'];
 
 app.get('/', (req, res) => {
-    res.render('index', {
-			arr: arr
-		});
+	res.render('index');
 });
 
-app.get('/contacts', (req, res) => {
-    res.render('contacts');
+app.get('/articles', (req, res, next) => {
+	res.render('articles');
 });
 
-app.post('/', (req, res) => {
-		console.log(req.body);
-		res.redirect('/');
+app.post('/articles', (req, res, next) => {
+	res.send('OK!');
+});
+
+app.get('/articles/:id', (req, res, next) => {
+	const id = req.params.id;
+	console.log(id);
+	res.send('articles[id]');
+});
+
+app.delete('/articles/:id', (req, res, next) => {
+	const id = req.params.id;
+	console.log(`delete ${id}`);
+	delete articles[id];
+	res.send(`delete ${articles[id]}`);
 });
 
 
