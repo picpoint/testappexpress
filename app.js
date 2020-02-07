@@ -4,6 +4,7 @@ const port = process.env.port || 4000;
 const exphbs = require('express-handlebars');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const articles = require('./db/articlesdb');
 const hbs = exphbs.create({
     defaultLayout: 'main',
     extname: 'hbs'
@@ -12,7 +13,7 @@ const hbs = exphbs.create({
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', 'views');
-app.use(bodyParser({extended: true}));
+app.use(bodyParser.urlencoded({extended: true}));
 
 
 app.get('/', (req, res) => {
@@ -20,17 +21,19 @@ app.get('/', (req, res) => {
 });
 
 app.get('/articles', (req, res, next) => {
-	res.render('articles');
+	res.send(articles);
 });
 
-app.post('/articles', (req, res, next) => {
-	res.send('OK!');
+app.post('/', (req, res, next) => {
+  const article = {title: req.body.articlebody};
+  res.send(article);
+  console.log(article);
 });
 
 app.get('/articles/:id', (req, res, next) => {
 	const id = req.params.id;
 	console.log(id);
-	res.send('articles[id]');
+	res.send(articles[id]);
 });
 
 app.delete('/articles/:id', (req, res, next) => {
@@ -39,6 +42,7 @@ app.delete('/articles/:id', (req, res, next) => {
 	delete articles[id];
 	res.send(`delete ${articles[id]}`);
 });
+
 
 
 
